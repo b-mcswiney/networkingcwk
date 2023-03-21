@@ -57,7 +57,7 @@ public class ClientHandler extends Thread
 
         if (inputItems[0].equals("show")) 
         {
-            data.outputAllData(out);;
+            data.outputAllData(out);
         }
         else if (inputItems[0].equals("item")) 
         {
@@ -74,13 +74,28 @@ public class ClientHandler extends Thread
     {
         out.println("Add " + item + " to table with a starting bid of 1");
 
-        data.addData(item, socket.getRemoteSocketAddress().toString());
+        Integer addStatus = data.addData(item, socket.getRemoteSocketAddress().toString());
+
+        if(addStatus == 1)
+        {
+            out.println("Failure");
+        }
     }
 
     private void bid(String item, String bid)
     {
         out.println("bid for " + item + " at " + bid);
+        
+        Integer addStatus = data.updateBid(item, Integer.parseInt(bid), socket.getRemoteSocketAddress().toString());
 
-        data.updateBid(item, Integer.parseInt(bid));
+        if(addStatus == 1)
+        {
+            out.println("Failure");
+        }
+
+        if(addStatus == 2)
+        {
+            out.println("Rejected");
+        }
     }
 }
