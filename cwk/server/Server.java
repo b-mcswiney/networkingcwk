@@ -1,17 +1,26 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import javax.xml.crypto.Data;
 
 public class Server 
 {
 	private ServerSocket serverSocket = null;
+	private Socket clientSocket = null;
+	private ExecutorService service = null;
+	private DataHandler data = null;
 
 	public Server() {
 		try {
-            serverSocket = new ServerSocket(2323);
+            serverSocket = new ServerSocket(6660);
+			service = Executors.newFixedThreadPool(30);
+			data = new DataHandler();
         }
         catch (IOException e) {
-            System.err.println("Could not listen on port: 2323.");
+            System.err.println("Could not listen on port: 6660.");
             System.exit(1);
         }
 	}
@@ -20,37 +29,16 @@ public class Server
 
 		while ( true )
 		{
-			Socket clientSocket = null;
-
 			try 
 			{
 				clientSocket = serverSocket.accept();
+				service.submit( new ClientHandler(clientSocket, data) );
 			}
 			catch (IOException e)
 			{
 				System.err.println(e);
 				System.exit(1);
-			}
-
-			try
-			{
-				InetAddress inet = clientSocket.getInetAddress();
-				Date date = new Date();
-				System.out.println("\nDate " + date.toString());
-				System.out.println("connection made from " + inet.getHostName());
-	  
-				PrintWriter writer = new PrintWriter(clientSocket.getOutputStream());
-				writer.println("Connection terminated.");
-				writer.close();
-				System.out.println("Connection terminated.");
-				clientSocket.close();
-			}
-			catch (IOException e)
-			{
-				System.err.println(e);
-				System.exit(1);
-			}
-			
+			}	
 		}
 	}
 

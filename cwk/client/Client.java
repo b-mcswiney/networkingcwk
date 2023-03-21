@@ -5,7 +5,7 @@ import java.util.*;
 public class Client 
 {
 
-	public void connect()
+	public void connect( String userInput )
 	{
 		// Initialise Reader and writer
 		Socket s = null;
@@ -14,7 +14,7 @@ public class Client
 
 		try {
 			// Set up connection to the server
-			s = new Socket("localhost", 2323);
+			s = new Socket("localhost", 6660);
 			
 			// Set up writing stream with the server
 			socketOutput = new PrintWriter(s.getOutputStream(), true);
@@ -33,31 +33,41 @@ public class Client
 			System.exit(1);
 		}
 
-		// Reader for the keyboard
-		BufferedReader stdIn = new BufferedReader(
-                                   new InputStreamReader(System.in) );
         String fromServer;
         String fromUser;
 
 		try {
-			while((fromServer=socketInputer.readLine()) != null)
+			fromServer=socketInputer.readLine();
+			// Echo response from the server
+			System.out.println("Server response: " + fromServer);
+
+			if(userInput != null) 
 			{
+				// Echo client string.
+				System.out.println( "Client: " + userInput );
+
+				// Write to server.
+				socketOutput.println(userInput);
+
+				fromServer=socketInputer.readLine();
+
 				// Echo response from the server
 				System.out.println("Server response: " + fromServer);
-
-				// Client types in response
-				fromUser = stdIn.readLine();
-				if(fromUser != null) {
-					// Echo client string.
-					System.out.println( "Client: " + fromUser );
-
-					// Write to server.
-					socketOutput.println(fromUser);
-				}
 			}
+
+			while((fromServer=socketInputer.readLine()) !=null)
+			{
+				if(fromServer.equals("bye"))
+				{
+					break;
+				}
+				System.out.println(fromServer);
+			}
+
+			
+
 			socketOutput.close();
             socketInputer.close();
-            stdIn.close();
             s.close();
 		}
 		catch(IOException e) {
@@ -68,6 +78,7 @@ public class Client
 	public static void main( String[] args )
 	{
 		Client client = new Client();
-		client.connect();
+		String userInput = String.join(" ", args);
+		client.connect( userInput );
 	}
 }
