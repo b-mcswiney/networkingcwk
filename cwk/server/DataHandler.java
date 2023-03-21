@@ -35,7 +35,7 @@ public class DataHandler
     {
         out.println("Show current bids");
         for ( Map.Entry<String, Integer> entry : bids.entrySet()) {
-            out.println("Item: " + entry.getKey() + " Current bid " + entry.getValue() + " from ip: " + ips.get(entry.getKey()));
+            out.println("Item: " + entry.getKey() + ", Current bid £" + entry.getValue() + ", from ip: " + ips.get(entry.getKey()));
         }
     }
 

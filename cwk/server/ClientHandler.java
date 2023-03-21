@@ -72,7 +72,7 @@ public class ClientHandler extends Thread
 
     private void item(String item)
     {
-        out.println("Add " + item + " to table with a starting bid of 1");
+        out.println("Add " + item + " to auction house with a starting bid of 1");
 
         Integer addStatus = data.addData(item, socket.getRemoteSocketAddress().toString());
 
