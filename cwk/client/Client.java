@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.util.*;
 
 public class Client 
 {
@@ -34,7 +33,6 @@ public class Client
 		}
 
         String fromServer;
-        String fromUser;
 
 		try {
 			fromServer=socketInputer.readLine();
