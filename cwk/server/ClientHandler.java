@@ -1,7 +1,6 @@
 import java.net.*;
 import java.time.*;
 import java.io.*;
-import java.util.*;
 
 public class ClientHandler extends Thread
 {
@@ -20,12 +19,7 @@ public class ClientHandler extends Thread
     public void run() 
     {
         try
-			{
-				InetAddress inet = socket.getInetAddress();
-				Date date = new Date();
-				System.out.println("\nDate " + date.toString());
-				System.out.println("connection made from " + inet.getHostName());
-	  
+			{	  
 			    out = new PrintWriter(socket.getOutputStream(), true);
                 in = new BufferedReader(
     	    	                		new InputStreamReader(
@@ -61,7 +55,7 @@ public class ClientHandler extends Thread
             LocalTime time = LocalTime.now();
 
             FileOutputStream logOut = new FileOutputStream("log.txt", true);
-            System.out.println(request);
+
             logOut.write((date.toString() + "|" + time.toString() + "|" + connectionAddress.toString() + "|" + request + "\n").getBytes());
 
             logOut.close();
