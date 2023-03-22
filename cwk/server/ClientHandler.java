@@ -1,4 +1,5 @@
 import java.net.*;
+import java.time.*;
 import java.io.*;
 import java.util.*;
 
@@ -35,7 +36,7 @@ public class ClientHandler extends Thread
                 out.println(outputLine);
 
 				inputLine = in.readLine();
-                
+                logConnection(inputLine);
                 readInput(inputLine);
                 
                 out.println("bye");
@@ -47,8 +48,28 @@ public class ClientHandler extends Thread
 			catch (IOException e)
 			{
 				System.err.println(e);
-				System.exit(1);
 			}
+    }
+
+    private void logConnection(String request)
+    {
+        try
+        {
+            // Getting the info to be outputted
+            SocketAddress connectionAddress = socket.getRemoteSocketAddress();
+            LocalDate date = LocalDate.now();
+            LocalTime time = LocalTime.now();
+
+            FileOutputStream logOut = new FileOutputStream("log.txt", true);
+            System.out.println(request);
+            logOut.write((date.toString() + "|" + time.toString() + "|" + connectionAddress.toString() + "|" + request + "\n").getBytes());
+
+            logOut.close();
+        }
+        catch(IOException e)
+        {
+            System.err.println(e);
+        }
     }
 
     private void readInput(String input)

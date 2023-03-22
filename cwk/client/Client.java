@@ -24,12 +24,10 @@ public class Client
 		catch( UnknownHostException e)
 		{
 			System.err.println("Cannot connect to that host");
-			System.exit(1);
 		}
 		catch( IOException e)
 		{
 			System.err.println(e);
-			System.exit(1);
 		}
 
         String fromServer;
@@ -70,7 +68,6 @@ public class Client
 		}
 		catch(IOException e) {
             System.err.println("I/O exception during execution\n");
-            System.exit(1);
         }
 	}
 	public static void main( String[] args )

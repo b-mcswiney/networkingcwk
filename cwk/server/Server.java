@@ -15,10 +15,18 @@ public class Server
             serverSocket = new ServerSocket(6660);
 			service = Executors.newFixedThreadPool(30);
 			data = new DataHandler();
+
+			// Create log file when server starts
+			File log = new File("log.txt");
+			log.createNewFile();
+
+			// Ensure this new file is empty for this server
+			FileWriter w = new FileWriter("log.txt", false);
+			w.write("");
+			w.close();
         }
         catch (IOException e) {
             System.err.println("Could not listen on port: 6660.");
-            System.exit(1);
         }
 	}
 
@@ -34,7 +42,6 @@ public class Server
 			catch (IOException e)
 			{
 				System.err.println(e);
-				System.exit(1);
 			}	
 		}
 	}
