@@ -34,7 +34,12 @@ public class DataHandler
 
     public void outputAllData(PrintWriter out)
     {
-        for ( Map.Entry<String, Double> entry : bids.entrySet()) {
+        if (bids.isEmpty())
+        {
+            out.println("There are currently no items in this auction.");
+        }
+        for ( Map.Entry<String, Double> entry : bids.entrySet()) 
+        {
             out.println(entry.getKey() + " : " + entry.getValue() + " : " + ips.get(entry.getKey()));
         }
     }

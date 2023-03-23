@@ -116,6 +116,12 @@ public class ClientHandler extends Thread
         {
             out.println("Failure");
         }
+
+        // No errors return success
+        else
+        {
+            out.println("Success");
+        }
     }
 
     private void bid(String item, String bid)
@@ -128,9 +134,15 @@ public class ClientHandler extends Thread
         {
             out.println("Failure");
         }
-        if(addStatus == 2)
+        else if(addStatus == 2)
         {
             out.println("Rejected");
+        }
+        
+        // No errors return success
+        else
+        {
+            out.println("Success");
         }
     }
 }
