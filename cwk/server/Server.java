@@ -10,9 +10,12 @@ public class Server
 	private ExecutorService service = null;
 	private DataHandler data = null;
 
-	public Server() {
-		try {
-            serverSocket = new ServerSocket(6660);
+	public Server() 
+	{
+		try 
+		{
+			// Opening port, executor service and the data handler
+            serverSocket = new ServerSocket(6666);
 			service = Executors.newFixedThreadPool(30);
 			data = new DataHandler();
 
@@ -25,17 +28,20 @@ public class Server
 			w.write("");
 			w.close();
         }
-        catch (IOException e) {
-            System.err.println("Could not listen on port: 6660.");
+        catch (IOException e) 
+		{
+            System.err.println("Could not listen on port: 6666.");
         }
 	}
 
-	public void runServer() {
-
+	public void runServer() 
+	{
+		// Constantly run server
 		while ( true )
 		{
 			try 
 			{
+				// Accept new client and send to client handler
 				clientSocket = serverSocket.accept();
 				service.submit( new ClientHandler(clientSocket, data) );
 			}

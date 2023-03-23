@@ -6,20 +6,21 @@ public class Client
 
 	public void connect( String userInput )
 	{
-		// Initialise Reader and writer
-		Socket s = null;
+		// Initialise socket, Reader and writer
+		Socket socket = null;
 		PrintWriter socketOutput = null;
 		BufferedReader socketInputer = null;
 
-		try {
+		try 
+		{
 			// Set up connection to the server
-			s = new Socket("localhost", 6660);
+			socket = new Socket("localhost", 6666);
 			
 			// Set up writing stream with the server
-			socketOutput = new PrintWriter(s.getOutputStream(), true);
+			socketOutput = new PrintWriter(socket.getOutputStream(), true);
 
 			// Set up reading stream with the server
-			socketInputer = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			socketInputer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 		}
 		catch( UnknownHostException e)
 		{
@@ -32,41 +33,34 @@ public class Client
 
         String fromServer;
 
-		try {
-			fromServer=socketInputer.readLine();
-			// Echo response from the server
-			System.out.println("Server response: " + fromServer);
-
+		try 
+		{
+			// Check that user input is not null
 			if(userInput != null) 
 			{
-				// Echo client string.
-				System.out.println( "Client: " + userInput );
-
 				// Write to server.
 				socketOutput.println(userInput);
-
-				fromServer=socketInputer.readLine();
-
-				// Echo response from the server
-				System.out.println("Server response: " + fromServer);
 			}
 
 			while((fromServer=socketInputer.readLine()) !=null)
 			{
+				// If server gives goodbye message end loop
 				if(fromServer.equals("bye"))
 				{
 					break;
 				}
+
+				// Print response from server
 				System.out.println(fromServer);
 			}
 
-			
-
+			// Close resources
 			socketOutput.close();
             socketInputer.close();
-            s.close();
+            socket.close();
 		}
-		catch(IOException e) {
+		catch(IOException e) 
+		{
             System.err.println("I/O exception during execution\n");
         }
 	}

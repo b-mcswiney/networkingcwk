@@ -3,12 +3,13 @@ import java.io.PrintWriter;
 
 public class DataHandler
 {
-    private HashMap<String, Integer> bids = null;
+    // Hash maps to store item, bid and ip of bid
+    private HashMap<String, Double> bids = null;
     private HashMap<String, String> ips = null;
 
     public DataHandler()
     {
-        bids = new HashMap<String, Integer>();
+        bids = new HashMap<String, Double>();
         ips = new HashMap<String, String>();
     }
 
@@ -24,8 +25,8 @@ public class DataHandler
         }
 
         // If loops through without finding item add to hash map
-        bids.put(item, 1);
-        ips.put(item, ip);
+        bids.put(item, 0.00);
+        ips.put(item, "<no bids>");
 
         // Return 0 indicating success
         return 0;
@@ -33,13 +34,12 @@ public class DataHandler
 
     public void outputAllData(PrintWriter out)
     {
-        out.println("Show current bids");
-        for ( Map.Entry<String, Integer> entry : bids.entrySet()) {
-            out.println("Item: " + entry.getKey() + ", Current bid £" + entry.getValue() + ", from ip: " + ips.get(entry.getKey()));
+        for ( Map.Entry<String, Double> entry : bids.entrySet()) {
+            out.println(entry.getKey() + " : " + entry.getValue() + " : " + ips.get(entry.getKey()));
         }
     }
 
-    public int updateBid(String item, Integer userBid, String ip)
+    public int updateBid(String item, Double userBid, String ip)
     {
         // Integer for checking the amount of items
         // with the same name as item found
@@ -54,7 +54,9 @@ public class DataHandler
                 
                 if(bids.get(items) < userBid)
                 {
+                    // Update table with new bid
                     bids.put(items, userBid);
+                    ips.put(items, ip.substring(1));
                 }
 
                 // If the bid supplied is less than current bid return 2 indicating Rejection
